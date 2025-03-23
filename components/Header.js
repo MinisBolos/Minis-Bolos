@@ -39,7 +39,7 @@ function Header({ cartItems, onCartClick, onAdminClick, isCatalogMode = false })
                             <img 
                                 src={logoUrl} 
                                 alt="Logo" 
-                                className="h-12 w-12 object-contain"
+                                className="h-00 w-20 object-contain"
                             />
                         ) : (
                             <i className="fas fa-birthday-cake text-white text-4xl"></i>
