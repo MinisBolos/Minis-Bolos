@@ -37,7 +37,7 @@ function CakeList({ onAddToCart }) {
         return (
             <div data-name="cake-list" className="container mx-auto px-4 py-6">
                 <h2 data-name="section-title" className="text-xl font-bold text-gray-800 mb-4">Escolha seu Bolo</h2>
-                <div data-name="cake-grid" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div data-name="cake-grid" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {cakes.map((cake) => (
                         <div
                             key={cake.id}

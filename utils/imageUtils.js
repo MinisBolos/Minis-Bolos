@@ -14,7 +14,7 @@ function fileToBase64(file) {
 }
 
 // Redimensionar e comprimir imagem antes de converter para Base64
-function resizeAndCompressImage(file, maxWidth = 1000, maxHeight = 800, quality = 0.7) {
+function resizeAndCompressImage(file, maxWidth = 800, maxHeight = 600, quality = 0.7) {
     return new Promise((resolve, reject) => {
         if (!file) {
             reject(new Error('Nenhum arquivo fornecido'));
@@ -80,12 +80,12 @@ function validateImageFile(file) {
         };
     }
     
-    // Verificar tamanho (máximo 10MB)
-    const maxSize = 10 * 2000 * 2000; // 10MB em bytes
+    // Verificar tamanho (máximo 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB em bytes
     if (file.size > maxSize) {
         return {
             valid: false,
-            message: 'Arquivo muito grande. O tamanho máximo é 10MB.'
+            message: 'Arquivo muito grande. O tamanho máximo é 5MB.'
         };
     }
     

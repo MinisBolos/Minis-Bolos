@@ -4,6 +4,10 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onCheckout }) {
         
         if (!isOpen) return null;
         
+        const handleRemoveItem = (itemId) => {
+            onUpdateQuantity(itemId, 0); // Quantidade 0 remove o item
+        };
+        
         return (
             <div data-name="cart-container" className="fixed inset-0 z-50 flex">
                 <div 
@@ -35,14 +39,22 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onCheckout }) {
                                     <li 
                                         key={item.id} 
                                         data-name={`cart-item-${item.id}`}
-                                        className="flex items-center p-2 border rounded-lg"
+                                        className="flex items-center p-2 border rounded-lg relative"
                                     >
+                                        <button
+                                            data-name={`remove-item-${item.id}`}
+                                            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                                            onClick={() => handleRemoveItem(item.id)}
+                                            title="Remover item"
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </button>
                                         <img 
                                             src={item.image} 
                                             alt={item.name} 
                                             className="w-16 h-16 object-cover rounded-md mr-3"
                                         />
-                                        <div className="flex-grow">
+                                        <div className="flex-grow pr-6">
                                             <h3 className="font-medium">{item.name}</h3>
                                             <p className="text-amber-500">R$ {item.price.toFixed(2)}</p>
                                             <p className="text-gray-500 text-xs mt-1 line-clamp-2">{item.description}</p>

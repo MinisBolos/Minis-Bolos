@@ -2,8 +2,20 @@ function PaymentForm({ orderData, cartItems, onSubmit, onPixSelected, onBackClic
     try {
         const [paymentMethod, setPaymentMethod] = React.useState('');
         const [changeAmount, setChangeAmount] = React.useState('');
+        const [showCardFeeWarning, setShowCardFeeWarning] = React.useState(false);
 
         const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        
+        // Calcular o total com a taxa da maquininha se for cartão
+        const cardFee = 1.50;
+        const totalWithCardFee = paymentMethod === 'credit' || paymentMethod === 'debit' 
+            ? totalPrice + cardFee 
+            : totalPrice;
+
+        React.useEffect(() => {
+            // Mostrar aviso de taxa quando selecionar cartão
+            setShowCardFeeWarning(paymentMethod === 'credit' || paymentMethod === 'debit');
+        }, [paymentMethod]);
 
         const handleSubmit = (e) => {
             e.preventDefault();
@@ -11,12 +23,14 @@ function PaymentForm({ orderData, cartItems, onSubmit, onPixSelected, onBackClic
             if (paymentMethod === 'pix') {
                 onPixSelected({
                     paymentMethod,
-                    changeAmount: null
+                    changeAmount: null,
+                    cardFee: null
                 });
             } else {
                 onSubmit({
                     paymentMethod,
-                    changeAmount: paymentMethod === 'money' ? changeAmount : null
+                    changeAmount: paymentMethod === 'money' ? changeAmount : null,
+                    cardFee: (paymentMethod === 'credit' || paymentMethod === 'debit') ? cardFee : null
                 });
             }
         };
@@ -47,9 +61,17 @@ function PaymentForm({ orderData, cartItems, onSubmit, onPixSelected, onBackClic
                             </li>
                         ))}
                     </ul>
-                    <div className="border-t pt-2 font-bold flex justify-between">
+                    
+                    {showCardFeeWarning && (
+                        <div className="flex justify-between text-sm border-t pt-2">
+                            <span>Taxa da maquininha:</span>
+                            <span>R$ {cardFee.toFixed(2)}</span>
+                        </div>
+                    )}
+                    
+                    <div className="border-t pt-2 font-bold flex justify-between mt-2">
                         <span>Total:</span>
-                        <span className="text-amber-500">R$ {totalPrice.toFixed(2)}</span>
+                        <span className="text-amber-500">R$ {totalWithCardFee.toFixed(2)}</span>
                     </div>
                 </div>
                 
@@ -68,6 +90,33 @@ function PaymentForm({ orderData, cartItems, onSubmit, onPixSelected, onBackClic
                             />
                             <label htmlFor="pix" className="text-gray-700">PIX</label>
                         </div>
+                        
+                        <div className="flex items-center space-x-3">
+                            <input
+                                type="radio"
+                                id="credit"
+                                name="paymentMethod"
+                                value="credit"
+                                checked={paymentMethod === 'credit'}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                className="h-4 w-4 text-amber-500"
+                            />
+                            <label htmlFor="credit" className="text-gray-700">Cartão de Crédito</label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-3">
+                            <input
+                                type="radio"
+                                id="debit"
+                                name="paymentMethod"
+                                value="debit"
+                                checked={paymentMethod === 'debit'}
+                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                className="h-4 w-4 text-amber-500"
+                            />
+                            <label htmlFor="debit" className="text-gray-700">Cartão de Débito</label>
+                        </div>
+                        
                         <div className="flex items-center space-x-3">
                             <input
                                 type="radio"
@@ -81,6 +130,12 @@ function PaymentForm({ orderData, cartItems, onSubmit, onPixSelected, onBackClic
                             <label htmlFor="money" className="text-gray-700">Dinheiro</label>
                         </div>
                     </div>
+
+                    {showCardFeeWarning && (
+                        <div className="bg-amber-50 border-l-4 border-amber-500 p-3 text-sm text-amber-700">
+                            <p><i className="fas fa-info-circle mr-1"></i> Para pagamento com cartão de crédito ou débito, há uma taxa fixa de R$ 1,50 da maquininha.</p>
+                        </div>
+                    )}
 
                     {paymentMethod === 'money' && (
                         <div>

@@ -9,21 +9,42 @@ function formatWhatsAppMessage(orderData, cartItems) {
         ).join('\n');
         
         // Calcular total
-        const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        let total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        // Adicionar taxa de cartão se aplicável
+        let taxInfo = '';
+        if (payment.cardFee) {
+            taxInfo = `\nTaxa da maquininha: R$ ${payment.cardFee.toFixed(2)}`;
+            total += payment.cardFee;
+        }
         
         // Formatar endereço
         const address = `${delivery.address}, ${delivery.number}${delivery.complement ? ', ' + delivery.complement : ''}`;
         
         // Formatar informações de pagamento
-        const paymentInfo = payment.paymentMethod === 'money' 
-            ? `Dinheiro (Troco para: R$ ${payment.changeAmount})` 
-            : 'PIX (Pagamento confirmado)';
+        let paymentInfo = '';
+        switch(payment.paymentMethod) {
+            case 'money':
+                paymentInfo = `Dinheiro (Troco para: R$ ${payment.changeAmount})`;
+                break;
+            case 'pix':
+                paymentInfo = 'PIX (Pagamento confirmado)';
+                break;
+            case 'credit':
+                paymentInfo = 'Cartão de Crédito';
+                break;
+            case 'debit':
+                paymentInfo = 'Cartão de Débito';
+                break;
+            default:
+                paymentInfo = payment.paymentMethod;
+        }
         
         // Montar mensagem completa
-        const message = `*Novo Pedido - Doces Delícias*
+        const message = `*Novo Pedido - Minis Bolos*
         
 *Itens do Pedido:*
-${itemsList}
+${itemsList}${taxInfo}
 
 *Total:* R$ ${total.toFixed(2)}
 
@@ -34,7 +55,7 @@ Ponto de Referência: ${delivery.reference || 'Não informado'}
 
 *Pagamento:* ${paymentInfo}
 
-Obrigado pela preferência! 😊`;
+Obrigado pela preferência! 😊 Seu Pedido Sai em 10 Minutos `;
 
         return encodeURIComponent(message);
     } catch (error) {

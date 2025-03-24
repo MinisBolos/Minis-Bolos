@@ -2,9 +2,50 @@
     transition: all 0.3s ease-in-out;
 }
 
+.cake-card {
+    position: relative;
+    transition: all 0.3s ease;
+    z-index: 1;
+    overflow: visible !important;
+}
+
+.cake-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #361f64;
+    border-radius: 0.5rem;
+    z-index: -1;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
 .cake-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(54, 31, 100, 0.4);
+}
+
+.cake-card:hover::before {
+    opacity: 0.7;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px 5px #361f64;
+    animation: pulse-purple 2s infinite;
+}
+
+@keyframes pulse-purple {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(54, 31, 100, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 20px 5px rgba(54, 31, 100, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 5px 2px rgba(54, 31, 100, 0.7);
+    }
 }
 
 .input-field {
@@ -150,4 +191,40 @@ body {
     to {
         box-shadow: 0 0 10px #361f64, 0 0 20px #361f64, 0 0 30px #361f64;
     }
+}
+
+/* Estilos para o botão de remover item */
+[data-name^="remove-item"] {
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+[data-name^="remove-item"]:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Estilos para o rodapé */
+footer {
+    margin-top: auto;
+    border-top: 1px solid #e5e7eb;
+    position: relative;
+    z-index: 10;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer .developer-credit {
+    font-style: italic;
 }

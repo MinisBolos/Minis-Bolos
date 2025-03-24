@@ -52,9 +52,15 @@ function App() {
         const handlePaymentSubmit = (paymentData) => {
             setOrderData(prev => ({ ...prev, payment: paymentData }));
             
-            // Se o pagamento for em dinheiro, redirecionar para WhatsApp
-            if (paymentData.paymentMethod === 'money') {
-                alert('Pedido realizado com sucesso! Redirecionando para o WhatsApp...');
+            // Se o pagamento não for PIX, redirecionar para WhatsApp
+            if (paymentData.paymentMethod !== 'pix') {
+                const paymentMethodText = {
+                    'money': 'em dinheiro',
+                    'credit': 'com cartão de crédito',
+                    'debit': 'com cartão de débito'
+                }[paymentData.paymentMethod] || '';
+                
+                alert(`Pedido ${paymentMethodText} realizado com sucesso! Redirecionando para o WhatsApp...`);
                 setTimeout(() => {
                     openWhatsApp(
                         {...orderData, payment: paymentData}, 
@@ -123,14 +129,14 @@ function App() {
         }, []);
 
         return (
-            <div data-name="app-container" className="min-h-screen bg-gray-50">
+            <div data-name="app-container" className="min-h-screen bg-gray-50 flex flex-col">
                 <Header 
                     cartItems={cartItems} 
                     onCartClick={handleCartClick} 
                     onAdminClick={handleOpenAdmin} 
                     isCatalogMode={isCatalogMode}
                 />
-                <main className="page-transition">
+                <main className="page-transition flex-grow">
                     {step === 1 && <CakeList onAddToCart={handleAddToCart} />}
                     {step === 2 && <DeliveryForm cartItems={cartItems} onSubmit={handleDeliverySubmit} onBackClick={handleBackFromDelivery} />}
                     {step === 3 && (
@@ -151,6 +157,7 @@ function App() {
                         />
                     )}
                 </main>
+                <Footer />
                 <Cart 
                     isOpen={isCartOpen} 
                     onClose={handleCloseCart} 

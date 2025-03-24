@@ -5,14 +5,15 @@ function PixPayment({ orderData, cartItems, onPaymentComplete, onBackClick }) {
         
         // Gerar dados do PIX (simulado)
         const pixData = {
-            key: "docesdelicias@gmail.com",
-            recipient: "Doces Delícias Confeitaria",
+            key: "55.276.743/0001-80",
+            recipient: "Minis Bolos",
             amount: totalPrice,
-            description: `Pedido Doces Delícias - ${cartItems.map(item => `${item.name}(${item.quantity})`).join(', ')}`
+            description: `Pedido Minis Bolos - ${cartItems.map(item => `${item.name}(${item.quantity})`).join(', ')}`
         };
 
         // Gerar string para QR Code do PIX
-        const pixString = `pix://docesdelicias@gmail.com?amount=${totalPrice}&description=${encodeURIComponent(pixData.description)}`;
+        const pixString = "00020126980014br.gov.bcb.pix0136538656ee-12d3-4646-8eda-6b351bf0ad150236Pagamento referente a compra no Site5204000053039865802BR592355276743 ALEXANDRO MONT6015Sao Joao de Mer622905255527674300000437586601ASA630413BB";
+
         
         React.useEffect(() => {
             // Gerar QR Code
