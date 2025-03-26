@@ -73,6 +73,13 @@ function loadCakes() {
             price: 50.00, 
             image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?w=500',
             description: 'Bolo vermelho aveludado com recheio e cobertura de cream cheese. Uma combinação sofisticada de sabores.'
+        },
+         { 
+            id: 4, 
+            name: 'Red Velvet', 
+            price: 50.00, 
+            image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?w=500',
+            description: 'Bolo vermelho aveludado com recheio e cobertura de cream cheese. Uma combinação sofisticada de sabores.'
         }
     ]);
 }
